@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Online Examination</title>
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .exam-container {
+            max-width: 850px;
+            margin: 30px auto;
+            padding: 25px;
+            background: white;
+            border-radius: 12px;
+        }
+
+        .timer-box {
+            position: sticky;
+            top: 0;
+            background: #eaf2f8;
+            padding: 15px;
+            text-align: center;
+            font-size: 22px;
+            color: #c0392b;
+            font-weight: bold;
+        }
+
+        .question-box {
+            background: #f5f7fa;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .question-box label {
+            display: block;
+            margin: 12px;
+        }
+
+        button {
+            background: #2471a3;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="exam-container">
+
+    <h1>{{ subject }} Examination</h1>
+
+    <h3>Welcome, {{ name }}</h3>
+
+    <div class="timer-box">
+        Time Remaining:
+        <span id="timer">10:00</span>
+    </div>
+
+    {% if questions %}
+
+    <form method="POST" action="/submit" id="examForm">
+
+        {% for q in questions %}
+
+        <div class="question-box">
+
+            <h3>{{ loop.index }}. {{ q.question }}</h3>
+
+            <label>
+                <input type="radio"
+                name="{{ q.id }}"
+                value="{{ q.option1 }}" required>
+                {{ q.option1 }}
+            </label>
+
+            <label>
+                <input type="radio"
+                name="{{ q.id }}"
+                value="{{ q.option2 }}">
+                {{ q.option2 }}
+            </label>
+
+            <label>
+                <input type="radio"
+                name="{{ q.id }}"
+                value="{{ q.option3 }}">
+                {{ q.option3 }}
+            </label>
+
+            <label>
+                <input type="radio"
+                name="{{ q.id }}"
+                value="{{ q.option4 }}">
+                {{ q.option4 }}
+            </label>
+
+        </div>
+
+        {% endfor %}
+
+        <button type="submit">
+            Submit Examination
+        </button>
+
+    </form>
+
+    {% else %}
+
+        <h3>No questions available!</h3>
+        <p>Please contact the administrator.</p>
+
+    {% endif %}
+
+</div>
+
+<script>
+    let timeLeft = {{ remaining | tojson }};
+
+    const timerDisplay = document.getElementById("timer");
+    const examForm = document.getElementById("examForm");
+
+    function updateTimer() {
+
+        let minutes = Math.floor(timeLeft / 60);
+        let seconds = timeLeft % 60;
+
+        timerDisplay.textContent =
+            String(minutes).padStart(2, "0") + ":" +
+            String(seconds).padStart(2, "0");
+
+        if (timeLeft <= 0) {
+
+            clearInterval(countdown);
+
+            alert("Time is over!");
+
+            if (examForm) {
+                examForm.submit();
+            }
+
+            return;
+        }
+
+        timeLeft--;
+    }
+
+    updateTimer();
+
+    const countdown = setInterval(updateTimer, 1000);
+</script>
+
+</body>
+</html>

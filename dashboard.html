@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        header {
+            background: #172554;
+            color: white;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h2 {
+            margin: 0;
+        }
+
+        .logout {
+            background: #ef4444;
+            color: white;
+            padding: 10px 18px;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .welcome, .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 12px #00000010;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .card h3 {
+            color: #2563eb;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+
+        .history {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .history th, .history td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        @media(max-width: 600px) {
+            header h2 {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h2>Online Examination System</h2>
+    <a href="{{ url_for('logout') }}" class="logout">Logout</a>
+</header>
+
+<div class="container">
+
+    <section class="welcome">
+        <h1>Welcome, {{ name }}!</h1>
+        <p>Welcome to your Student Dashboard.</p>
+        <p>You can start your examination and check your previous results here.</p>
+    </section>
+
+    <div class="cards">
+
+        <section class="card">
+            <h3>Online Examination</h3>
+            <p>Select a subject to attend its examination.</p>
+            <p>Exam Duration: 10 Minutes</p>
+            {% for subject in subjects %}
+                <a href="{{ url_for('exam', subject=subject.subject) }}" class="btn">
+                    Start {{ subject.subject }} Exam
+                </a>
+            {% else %}
+                <p>No subject-wise questions are available yet. Please contact the administrator.</p>
+            {% endfor %}
+        </section>
+
+        <section class="card">
+            <h3>Exam History</h3>
+            <p>Check your previous examination results.</p>
+            <a href="{{ url_for('history') }}" class="btn">
+                View History
+            </a>
+        </section>
+
+    </div>
+
+    <section class="card">
+        <h2>Your Previous Results</h2>
+
+        {% if results %}
+        <table class="history">
+            <tr>
+                <th>Subject</th>
+                <th>Score</th>
+                <th>Total Questions</th>
+            </tr>
+
+            {% for result in results %}
+            <tr>
+                <td>{{ result.subject }}</td>
+                <td>{{ result.score }}</td>
+                <td>{{ result.total }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        {% else %}
+        <p>You have not attended any examination yet.</p>
+        {% endif %}
+
+    </section>
+
+</div>
+
+</body>
+</html>

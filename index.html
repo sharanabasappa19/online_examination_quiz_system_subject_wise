@@ -1,0 +1,66 @@
+<!DOCTYPE html><html>
+<head>
+    <title>Online Examination and Quiz System</title><style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #eef2ff;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        width: 400px;
+        margin: 120px auto;
+        padding: 35px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+
+    h1 {
+        color: #1e40af;
+    }
+
+    p {
+        color: #555;
+    }
+
+    .btn {
+        display: block;
+        padding: 14px;
+        margin: 20px 0;
+        background: #2563eb;
+        color: white;
+        text-decoration: none;
+        border-radius: 7px;
+        font-weight: bold;
+    }
+
+    .admin {
+        background: #15803d;
+    }
+
+    .btn:hover {
+        opacity: 0.85;
+    }
+</style>
+
+</head><body><div class="container"><h1>Online Examination System</h1>
+
+<p>Welcome to our Online Examination and Quiz System.</p>
+
+<a class="btn" href="{{ url_for('login') }}">
+    Student Login
+</a>
+
+<a class="btn" href="{{ url_for('register') }}">
+    Student Registration
+</a>
+
+<a class="btn admin" href="{{ url_for('admin_login') }}">
+    Admin Login
+</a>
+
+</div></body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html><html>
+<head>
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            margin: 0;
+        }    header {
+        background: #1e40af;
+        color: white;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .container {
+        width: 85%;
+        margin: 30px auto;
+    }
+
+    .card {
+        background: white;
+        padding: 25px;
+        margin-bottom: 25px;
+        border-radius: 10px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+
+    input {
+        width: 95%;
+        padding: 10px;
+        margin: 8px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    button {
+        padding: 10px 20px;
+        background: #2563eb;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .delete {
+        background: #dc2626;
+    }
+
+    a {
+        text-decoration: none;
+        color: #2563eb;
+    }
+
+    .logout {
+        color: white;
+    }
+</style>
+
+</head><body><header>
+    <h1>Admin Dashboard</h1>
+    <p>Online Examination and Quiz System</p>
+    <a class="logout" href="{{ url_for('logout') }}">Logout</a>
+</header><div class="container"><div class="card">
+    <h2>Examination Details</h2>
+    <p><b>Examination Duration:</b> 10 Minutes</p>
+    <p><b>Total Questions:</b> {{ questions|length }}</p>
+    <p><b>System:</b> Online Examination</p>
+</div>
+
+<div class="card">
+    <h2>Add Examination Questions</h2>
+
+    <form method="POST" action="{{ url_for('add_question') }}">
+
+        <label for="subject"><b>Select Subject</b></label>
+        <select name="subject" id="subject" required>
+            <option value="General">General</option>
+            <option value="Computer Networks">Computer Networks</option>
+            <option value="Operating Systems">Operating Systems</option>
+            <option value="Java">Java</option>
+            <option value="Advanced Java">Advanced Java</option>
+            <option value="DBMS">DBMS</option>
+            <option value="Python">Python</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <input type="text" name="question"
+               placeholder="Enter Question" required>
+
+        <input type="text" name="option1"
+               placeholder="Option 1" required>
+
+        <input type="text" name="option2"
+               placeholder="Option 2" required>
+
+        <input type="text" name="option3"
+               placeholder="Option 3" required>
+
+        <input type="text" name="option4"
+               placeholder="Option 4" required>
+
+        <input type="text" name="answer"
+               placeholder="Correct Answer (Enter option text)" required>
+
+        <button type="submit">Add Question</button>
+
+    </form>
+</div>
+
+<div class="card">
+    <h2>Manage Questions</h2>
+
+    {% for q in questions %}
+
+    <div>
+        <p><b>Subject:</b> {{ q.subject }}</p>
+        <h3>{{ loop.index }}. {{ q.question }}</h3>
+
+        <p>1. {{ q.option1 }}</p>
+        <p>2. {{ q.option2 }}</p>
+        <p>3. {{ q.option3 }}</p>
+        <p>4. {{ q.option4 }}</p>
+
+        <a href="{{ url_for('delete_question', id=q.id) }}"
+           onclick="return confirm('Delete this question?')">
+            <button class="delete">Delete Question</button>
+        </a>
+
+        <hr>
+    </div>
+
+    {% else %}
+    <p>No questions added yet.</p>
+    {% endfor %}
+
+</div>
+
+<div class="card">
+    <h2>Student Examination Results</h2>
+
+    <a href="{{ url_for('admin_results') }}">
+        <button>View Student Results</button>
+    </a>
+</div>
+
+</div></body>
+</html>

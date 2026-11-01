@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exam History</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f1f5f9;
+            margin: 0;
+        }
+
+        header {
+            background: #172554;
+            color: white;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 40px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 14px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #dbeafe;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 20px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h2>Student Exam History</h2>
+</header>
+
+<div class="container">
+
+    <h1>Previous Examination Results</h1>
+
+    <table>
+        <tr>
+            <th>Subject</th>
+            <th>Marks Obtained</th>
+            <th>Total Marks</th>
+            <th>Percentage</th>
+        </tr>
+
+        {% for r in results %}
+        <tr>
+            <td>{{ r.subject }}</td>
+            <td>{{ r.score }}</td>
+            <td>{{ r.total }}</td>
+            <td>
+                {% if r.total and r.total > 0 %}
+                    {{ "%.2f"|format(r.score / r.total * 100) }}%
+                {% else %}
+                    0%
+                {% endif %}
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="4">No examination history available.</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+    <a href="/dashboard">Back to Dashboard</a>
+
+</div>
+
+</body>
+</html>
